@@ -16,6 +16,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name == 'main' && 'prod' || 'staging' }}
+    env:
+      REPORT_ENV: ${{ github.ref_name == 'main' && 'prod' || 'staging' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -46,7 +48,7 @@ jobs:
           BASE_URL: ${{ vars.SERVICE_URL }}
           TEST_EMAIL: ${{ vars.EMAIL }}
           TEST_PASSWORD: ${{ secrets.PASSWORD }}
-          ENVIRONMENT: ${{ github.ref_name == 'main' && 'prod' || 'staging' }}
+          ENVIRONMENT: ${{ env.REPORT_ENV }}
         working-directory: fastfive-dev
         run: |
           pytest tests/ -v --alluredir=../allure-results || true
@@ -63,8 +65,8 @@ jobs:
         if: always()
         run: |
           mkdir -p allure-results/history
-          if [ -d "gh-pages/history" ]; then
-            cp -r gh-pages/history/* allure-results/history/ || true
+          if [ -d "gh-pages/${{ env.REPORT_ENV }}/history" ]; then
+            cp -r gh-pages/${{ env.REPORT_ENV }}/history/* allure-results/history/ || true
           fi
 
       - name: Generate Allure report
@@ -76,13 +78,15 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: allure-report-${{ github.ref_name }}
+          name: allure-report-${{ env.REPORT_ENV }}
           path: allure-report
 
       - name: Deploy to GitHub Pages
-        if: always() && github.ref == 'refs/heads/main'
+        if: always() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging')
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: allure-report
           publish_branch: gh-pages
+          destination_dir: ${{ env.REPORT_ENV }}
+          keep_files: true
