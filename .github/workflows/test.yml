@@ -45,10 +45,10 @@ jobs:
 
       - name: Run Selenium tests
         env:
-          BASE_URL: ${{ vars.SERVICE_URL }}
-          TEST_EMAIL: ${{ vars.EMAIL }}
-          TEST_PASSWORD: ${{ secrets.PASSWORD }}
-          ENVIRONMENT: ${{ env.REPORT_ENV }}
+          AUTO_TEST_SERVICE_URL: ${{ vars.AUTO_TEST_SERVICE_URL }}
+          AUTO_TEST_EMAIL: ${{ vars.AUTO_TEST_EMAIL }}
+          AUTO_TEST_PASSWORD: ${{ secrets.AUTO_TEST_PASSWORD }}
+          AUTO_TEST_ENVIRONMENT: ${{ env.REPORT_ENV }}
         working-directory: fastfive-dev
         run: |
           pytest tests/ -v --alluredir=../allure-results || true

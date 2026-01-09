@@ -50,7 +50,7 @@ def driver(request):
 @pytest.fixture(scope="session")
 def base_url():
     """Base URL for the application under test."""
-    return os.environ.get("BASE_URL", "https://members.fastfive.co.kr")
+    return os.environ['AUTO_TEST_SERVICE_URL']
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
@@ -67,8 +67,8 @@ def pytest_configure(config):
     if allure_dir:
         env_props = {
             "Browser": "Chrome (Headless)",
-            "Base URL": os.environ.get("BASE_URL", "https://members.fastfive.co.kr"),
-            "Environment": os.environ.get("ENVIRONMENT", "local"),
+            "Service URL": os.environ['AUTO_TEST_SERVICE_URL'],
+            "Environment": os.environ['AUTO_TEST_ENVIRONMENT'],
         }
         os.makedirs(allure_dir, exist_ok=True)
         with open(os.path.join(allure_dir, "environment.properties"), "w") as f:

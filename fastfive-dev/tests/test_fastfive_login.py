@@ -222,13 +222,13 @@ class TestLoginFunctionality:
     @allure.title("올바른 자격 증명으로 로그인 성공 확인")
     @allure.severity(allure.severity_level.BLOCKER)
     @pytest.mark.skipif(
-        not os.environ.get("TEST_EMAIL") or not os.environ.get("TEST_PASSWORD"),
-        reason="TEST_EMAIL and TEST_PASSWORD environment variables required"
+        not os.environ.get("AUTO_TEST_EMAIL") or not os.environ.get("AUTO_TEST_PASSWORD"),
+        reason="AUTO_TEST_EMAIL and AUTO_TEST_PASSWORD environment variables required"
     )
     def test_successful_login(self, driver):
         """Test successful login with valid credentials."""
-        email = os.environ.get("TEST_EMAIL")
-        password = os.environ.get("TEST_PASSWORD")
+        email = os.environ['AUTO_TEST_EMAIL']
+        password = os.environ['AUTO_TEST_PASSWORD']
 
         with allure.step("이메일 입력"):
             email_input = WebDriverWait(driver, ELEMENT_WAIT_TIME).until(
