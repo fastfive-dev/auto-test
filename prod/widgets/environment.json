@@ -1,1 +1,1 @@
-[{"values":["Chrome (Headless)"],"name":"Browser"},{"values":["URL=https://members.fastfive.co.kr/"],"name":"Base"},{"values":["prod"],"name":"Environment"}]
+[{"values":["Chrome (Headless)"],"name":"Browser"},{"values":["URL=https://members.fastfive.co.kr/"],"name":"Service"},{"values":["prod"],"name":"Environment"}]
